@@ -8,7 +8,7 @@ namespace EBazar.API.Repositories.Interfaces
         Task<Product> CreateAsync(Product product);
         Task<Product?> GetByIdAsync(int id);
         Task<Product?> GetProductQuantityAsync(int id);
-        Task<(List<Product> products, int totalCount)> GetAllAsync(ProductQueryDto query);
+        Task<(List<ProductDto> products, int totalCount)> GetAllAsync(ProductQueryDto query);
         Task<bool> ExistsAsync(int id);
     }
 }

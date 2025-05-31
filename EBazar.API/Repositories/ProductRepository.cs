@@ -22,16 +22,12 @@ namespace EBazar.API.Repositories
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            product.Image= $"{_baseUrl}{product.Image}";
             return product;
         }
 
         public async Task<Product?> GetByIdAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product != null) {
-                product.Image = $"{_baseUrl}{product.Image}";
-            }
             return product;
         }
         public async Task<Product?> GetProductQuantityAsync(int id)
@@ -45,21 +41,42 @@ namespace EBazar.API.Repositories
                 .Where(ci => ci.ProductId == id)
                 .SumAsync(ci => ci.Quantity);
             int availableQuantity = product.Quantity - totalInCarts;
-            product.Image = $"{_baseUrl}{product.Image}";
             product.Quantity = availableQuantity;
             return product;
         }
 
 
-        public async Task<(List<Product> products, int totalCount)> GetAllAsync(ProductQueryDto query)
+        public async Task<(List<ProductDto> products, int totalCount)> GetAllAsync(ProductQueryDto query)
         {
-            var queryable = _context.Products.AsQueryable();
+            var queryable = _context.Products
+                   .GroupJoin(
+                       _context.CartItems,
+                       p => p.Id,
+                       ci => ci.ProductId,
+                       (p, cartItems) => new
+                       {
+                           Product = p,
+                           CartQuantity = cartItems.Sum(ci => ci.Quantity)
+                       })
+                   .Select(x => new ProductDto
+                   {
+                       Id = x.Product.Id,
+                       Name = x.Product.Name,
+                       Slug = x.Product.Slug,
+                       Image = x.Product.Image,
+                       Price = x.Product.Price,
+                       Discount = x.Product.Discount,
+                       StartDate = x.Product.StartDate,
+                       EndDate = x.Product.EndDate,
+                       Quantity = x.Product.Quantity,
+                       RemainingQuantity = x.Product.Quantity - x.CartQuantity
+                   });
 
+            // Apply search filter
             if (!string.IsNullOrWhiteSpace(query.Search))
             {
                 queryable = queryable.Where(p => p.Name.Contains(query.Search) || p.Slug.Contains(query.Search));
             }
-
             var totalCount = await queryable.CountAsync();
 
             queryable = query.SortBy?.ToLower() switch
@@ -70,12 +87,9 @@ namespace EBazar.API.Repositories
                 "quantity" => query.SortOrder?.ToLower() == "desc"
                     ? queryable.OrderByDescending(p => p.Quantity)
                     : queryable.OrderBy(p => p.Quantity),
-                "created" => query.SortOrder?.ToLower() == "desc"
-                ? queryable.OrderByDescending(p => p.Id)
-                : queryable.OrderBy(p => p.Quantity),
                 _ => query.SortOrder?.ToLower() == "desc"
-                    ? queryable.OrderByDescending(p => p.Name)
-                    : queryable.OrderBy(p => p.Name)
+                    ? queryable.OrderByDescending(p => p.Id)
+                    : queryable.OrderBy(p => p.Id)
             };
 
             var products = await queryable

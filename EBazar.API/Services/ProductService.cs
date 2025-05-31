@@ -63,11 +63,11 @@ namespace EBazar.API.Services
                 if (query.PageSize <= 0 || query.PageSize > 100) query.PageSize = 10;
 
                 var (products, totalCount) = await _productRepository.GetAllAsync(query);
-                var productDtos = _mapper.Map<List<ProductDto>>(products);
+                List<ProductDto> productDtos = products;
 
                 var response = new PaginatedResponse<ProductDto>
                 {
-                    Data = productDtos,
+                    Data = products,
                     TotalRecords = totalCount,
                     Page = query.Page,
                     PageSize = query.PageSize,

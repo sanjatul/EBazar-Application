@@ -13,17 +13,19 @@ namespace EBazar.API.Services
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<CartService> _logger;
-
+        private readonly string _baseUrl;
         public CartService(
             ICartRepository cartRepository,
             IProductRepository productRepository,
             IMapper mapper,
-            ILogger<CartService> logger)
+            ILogger<CartService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
             _mapper = mapper;
             _logger = logger;
+            var httpContext = httpContextAccessor.HttpContext;
+            _baseUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}";
         }
 
         public async Task<ApiResponse<CartDto>> AddToCartAsync(AddToCartDto addToCartDto)
@@ -160,7 +162,13 @@ namespace EBazar.API.Services
                     return ApiResponse<CartDto>.ErrorResponse("No Items Available");
                     //return ApiResponse<CartDto>.SuccessResponse(new { });
                 }
-
+                foreach (var item in cart.Items)
+                {
+                    if (!string.IsNullOrEmpty(item.Product?.Image))
+                    {
+                        item.Product.Image = $"{_baseUrl}{item.Product.Image}";
+                    }
+                }
                 var cartDto = _mapper.Map<CartDto>(cart);
                 return ApiResponse<CartDto>.SuccessResponse(cartDto);
             }

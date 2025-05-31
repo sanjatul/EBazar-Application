@@ -14,7 +14,7 @@ namespace EBazar.API.Models.DTOs
      [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero.")]
      public decimal Price { get; set; }
 
-     [Range(0, double.MaxValue, ErrorMessage = "Discount must be greater than or equal zero.")]
+     [Range(0, 100, ErrorMessage = "Discount must be between 0-100%")]
      public decimal? Discount { get; set; } = 0;
 
      public DateTime? StartDate { get; set; }
