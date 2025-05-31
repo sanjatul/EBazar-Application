@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EBazar.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialTablesAdded : Migration
+    public partial class intialdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

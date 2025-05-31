@@ -1,12 +1,12 @@
 using EBazar.API.Data;
-using EBazar.API.Repositories.Interfaces;
+using EBazar.API.Middleware;
 using EBazar.API.Repositories;
+using EBazar.API.Repositories.Interfaces;
+using EBazar.API.Services;
+using EBazar.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Text.Json;
-using EBazar.API.Middleware;
-using EBazar.API.Services.Interfaces;
-using EBazar.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
