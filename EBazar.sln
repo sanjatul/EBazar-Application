@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBazar.API", "EBazar.API\EBazar.API.csproj", "{74693162-133D-4A8C-9AA0-39FE872CF4D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBazarWeb", "EBazarWeb\EBazarWeb.csproj", "{D3A4630F-4E03-4D25-B857-7A4ED5F73C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{74693162-133D-4A8C-9AA0-39FE872CF4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74693162-133D-4A8C-9AA0-39FE872CF4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74693162-133D-4A8C-9AA0-39FE872CF4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3A4630F-4E03-4D25-B857-7A4ED5F73C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3A4630F-4E03-4D25-B857-7A4ED5F73C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3A4630F-4E03-4D25-B857-7A4ED5F73C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3A4630F-4E03-4D25-B857-7A4ED5F73C8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
